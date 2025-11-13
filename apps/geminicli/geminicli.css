@@ -3,38 +3,64 @@
  */
 
 .terminal {
-    background: #0c0c0c;
-    color: #00ff00;
-    font-family: 'Courier New', monospace;
-    padding: 16px;
+    background: #0d1117;
+    color: #c9d1d9;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    padding: 20px;
     height: 100%;
     overflow-y: auto;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.6;
 }
 
 .terminal-line {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 .terminal-prompt {
-    color: #00ff00;
+    color: #58a6ff;
     font-weight: bold;
+    margin-right: 8px;
 }
 
 .terminal-input-line {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-top: 8px;
 }
 
 .terminal-input {
     flex: 1;
     background: transparent;
     border: none;
-    color: #00ff00;
-    font-family: 'Courier New', monospace;
-    font-size: 13px;
+    color: #c9d1d9;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
     outline: none;
+    caret-color: #58a6ff;
 }
 
+.terminal-input::placeholder {
+    color: #6e7681;
+}
+
+/* Scrollbar Styling */
+.terminal::-webkit-scrollbar {
+    width: 10px;
+}
+
+.terminal::-webkit-scrollbar-track {
+    background: #161b22;
+}
+
+.terminal::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 5px;
+}
+
+.terminal::-webkit-scrollbar-thumb:hover {
+    background: #484f58;
+}

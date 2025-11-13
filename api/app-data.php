@@ -49,6 +49,10 @@ try {
     if ($appId === 'cmd') {
         $data['showHelp'] = true;
     }
+    
+    if ($appId === 'geminicli') {
+        $data['showHelp'] = true;
+    }
 
     // Prüfe ob App eine init-Methode hat
     if (method_exists($app, 'getInitFunction')) {
