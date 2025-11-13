@@ -83,6 +83,14 @@ return [
         'category' => 'productivity',
         'enabled' => true,
         'path' => 'apps/folder/'
+    ],
+    'teleprompter' => [
+        'name' => 'Teleprompter',
+        'class' => 'TeleprompterApp',
+        'icon' => '📜',
+        'category' => 'productivity',
+        'enabled' => true,
+        'path' => 'apps/teleprompter/'
     ]
 ];
 

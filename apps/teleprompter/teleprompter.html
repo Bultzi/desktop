@@ -1,0 +1,25 @@
+<div class="teleprompter-container">
+    <div class="teleprompter-controls" id="teleprompter-controls">
+        <div class="control-group">
+            <label for="teleprompter-text-input">Text eingeben:</label>
+            <textarea id="teleprompter-text-input" class="teleprompter-input" placeholder="Geben Sie hier Ihren Text ein..."></textarea>
+        </div>
+        <div class="control-group">
+            <button id="teleprompter-start-btn" class="teleprompter-btn teleprompter-btn-primary">Start</button>
+            <button id="teleprompter-stop-btn" class="teleprompter-btn teleprompter-btn-secondary" disabled>Stop</button>
+            <button id="teleprompter-reset-btn" class="teleprompter-btn teleprompter-btn-secondary">Zurücksetzen</button>
+        </div>
+        <div class="control-group">
+            <label for="teleprompter-speed">Geschwindigkeit:</label>
+            <input type="range" id="teleprompter-speed" class="teleprompter-slider" min="1" max="10" value="5">
+            <span id="teleprompter-speed-value">5</span>
+        </div>
+    </div>
+    <div class="teleprompter-display-container">
+        <button id="teleprompter-show-controls-btn" class="teleprompter-show-controls-btn" style="display: none;" title="ESC drücken oder hier klicken für Einstellungen">⚙️</button>
+        <div id="teleprompter-display" class="teleprompter-display">
+            <div class="teleprompter-text-placeholder">Geben Sie einen Text ein und klicken Sie auf "Start"</div>
+        </div>
+    </div>
+</div>
+
