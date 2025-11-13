@@ -22,14 +22,75 @@ body {
     height: 100%;
     padding: var(--space-24, 24px);
     position: relative;
+    overflow: hidden;
 }
 
+/* Desktop Hintergrundbilder */
+.desktop-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    filter: brightness(0.85) saturate(1.1);
+}
+
+.desktop-background.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.desktop-background.fade-out {
+    opacity: 0;
+    z-index: 0;
+}
+
+/* Overlay für bessere Lesbarkeit */
+.desktop-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Cream-Theme Overlay (helle Farben) */
+.desktop-overlay-cream {
+    background: linear-gradient(
+        135deg,
+        rgba(245, 237, 224, 0.3) 0%,
+        rgba(245, 237, 224, 0.1) 50%,
+        rgba(245, 237, 224, 0.2) 100%
+    );
+}
+
+/* Dark-Theme Overlay (dunkle Farben für bessere Lesbarkeit) */
+.desktop-overlay-dark {
+    background: linear-gradient(
+        135deg,
+        rgba(31, 33, 33, 0.4) 0%,
+        rgba(31, 33, 33, 0.2) 50%,
+        rgba(31, 33, 33, 0.3) 100%
+    );
+}
+
+/* Desktop-Icons über dem Hintergrund */
 .desktop-icons {
     display: grid;
     grid-template-columns: repeat(auto-fill, 100px);
     gap: var(--space-24, 24px);
     padding: var(--space-16, 16px);
     transition: opacity 0.3s ease;
+    position: relative;
+    z-index: 10;
 }
 
 .desktop-icon {
@@ -73,7 +134,9 @@ body {
     font-size: 13px;
     text-align: center;
     font-weight: 600;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(255, 255, 255, 0.8);
+    position: relative;
+    z-index: 1;
 }
 
 /* Window Styles */
@@ -90,6 +153,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    z-index: 100;
 }
 
 .window.gemini-window {

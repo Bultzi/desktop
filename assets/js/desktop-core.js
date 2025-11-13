@@ -12,11 +12,104 @@ let dragOffset = { x: 0, y: 0 };
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Desktop Core geladen');
     initializeDesktop();
+    initializeBackgroundSlideshow();
 });
 
 function initializeDesktop() {
     // Desktop ist bereit
     console.log('Desktop initialisiert');
+}
+
+// Hintergrundbild-Slideshow (für Cream- und Dark-Theme)
+let currentBackgroundIndex = 0;
+let backgroundSlideshowInterval = null;
+
+function initializeBackgroundSlideshow() {
+    // Prüfe welches Theme aktiv ist
+    if (!DesktopConfig || !DesktopConfig.theme) {
+        return;
+    }
+    
+    let backgrounds = [];
+    let overlayClass = 'desktop-overlay';
+    
+    // Lade unterschiedliche Bilder je nach Theme
+    if (DesktopConfig.theme === 'cream') {
+        backgrounds = [
+            'assets/images/bg.jpg',
+            'assets/images/bg2.jpg',
+            'assets/images/bg3.jpg'
+        ];
+        overlayClass = 'desktop-overlay desktop-overlay-cream';
+    } else if (DesktopConfig.theme === 'dark') {
+        backgrounds = [
+            'assets/images/bg_dark.jpg',
+            'assets/images/bg_dark2.jpg',
+            'assets/images/bg_dark3.jpg'
+        ];
+        overlayClass = 'desktop-overlay desktop-overlay-dark';
+    } else {
+        return; // Keine Hintergrundbilder für andere Themes
+    }
+    
+    const desktop = document.getElementById('desktop');
+    if (!desktop) return;
+    
+    // Erstelle Hintergrundbilder-Elemente
+    backgrounds.forEach((bgUrl, index) => {
+        const bgElement = document.createElement('div');
+        bgElement.className = 'desktop-background';
+        bgElement.style.backgroundImage = `url('${bgUrl}')`;
+        bgElement.dataset.index = index;
+        
+        if (index === 0) {
+            bgElement.classList.add('active');
+        }
+        
+        desktop.insertBefore(bgElement, desktop.firstChild);
+    });
+    
+    // Erstelle Overlay mit Theme-spezifischer Klasse
+    const overlay = document.createElement('div');
+    overlay.className = overlayClass;
+    desktop.insertBefore(overlay, desktop.firstChild);
+    
+    // Starte automatischen Wechsel (alle 8 Sekunden)
+    backgroundSlideshowInterval = setInterval(() => {
+        switchBackground();
+    }, 8000);
+    
+    // Preload alle Bilder für flüssige Übergänge
+    preloadBackgroundImages(backgrounds);
+}
+
+function switchBackground() {
+    const backgrounds = document.querySelectorAll('.desktop-background');
+    if (backgrounds.length === 0) return;
+    
+    // Entferne active-Klasse vom aktuellen Bild
+    const currentBg = backgrounds[currentBackgroundIndex];
+    if (currentBg) {
+        currentBg.classList.remove('active');
+        currentBg.classList.add('fade-out');
+    }
+    
+    // Wechsle zum nächsten Bild
+    currentBackgroundIndex = (currentBackgroundIndex + 1) % backgrounds.length;
+    
+    // Setze neues Bild als aktiv
+    const nextBg = backgrounds[currentBackgroundIndex];
+    if (nextBg) {
+        nextBg.classList.remove('fade-out');
+        nextBg.classList.add('active');
+    }
+}
+
+function preloadBackgroundImages(urls) {
+    urls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+    });
 }
 
 // Hamburger-Menü
