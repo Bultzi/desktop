@@ -1,0 +1,94 @@
+<div class="whiteboard-container">
+    <div class="whiteboard-toolbar">
+        <div class="toolbar-section">
+            <span class="toolbar-label">Werkzeuge:</span>
+            <button class="tool-btn active" data-tool="freehand" onclick="selectTool('freehand')" title="Freihand">✏️</button>
+            <button class="tool-btn" data-tool="circle" onclick="selectTool('circle')" title="Kreis">⭕</button>
+            <button class="tool-btn" data-tool="rectangle" onclick="selectTool('rectangle')" title="Rechteck">▭</button>
+            <button class="tool-btn" data-tool="arrow" onclick="selectTool('arrow')" title="Pfeil">➡️</button>
+            <button class="tool-btn" data-tool="text" onclick="selectTool('text')" title="Text">T</button>
+            <button class="tool-btn" data-tool="eraser" onclick="selectTool('eraser')" title="Radiergummi">🧹</button>
+            <button class="tool-btn" data-tool="fill" onclick="selectTool('fill')" title="Fülleimer">🪣</button>
+            <button class="tool-btn" onclick="clearWhiteboard()" title="Alles löschen" style="background: #ffe5e5;">🗑️</button>
+        </div>
+        <div class="toolbar-section">
+            <span class="toolbar-label">Farben:</span>
+            <button class="color-btn active" style="background: #000000" onclick="selectColor('#000000')"></button>
+            <button class="color-btn" style="background: #FF0000" onclick="selectColor('#FF0000')"></button>
+            <button class="color-btn" style="background: #0000FF" onclick="selectColor('#0000FF')"></button>
+            <button class="color-btn" style="background: #00AA00" onclick="selectColor('#00AA00')"></button>
+            <button class="color-btn" style="background: #FFFF00" onclick="selectColor('#FFFF00')"></button>
+            <button class="color-btn" style="background: #FFA500" onclick="selectColor('#FFA500')"></button>
+            <button class="color-btn" style="background: #AA00AA" onclick="selectColor('#AA00AA')"></button>
+            <button class="color-btn" style="background: #FFFFFF; border-color: #ccc" onclick="selectColor('#FFFFFF')"></button>
+            <button class="color-btn" style="background: #808080" onclick="selectColor('#808080')"></button>
+        </div>
+        <div class="toolbar-section">
+            <span class="toolbar-label">Icon:</span>
+            <div style="position: relative; display: inline-block;">
+                <button class="tool-btn" id="icon-dropdown-btn" onclick="toggleIconDropdown()" title="Icon hinzufügen" style="width: auto; padding: 0 12px;">➕ Icon</button>
+                <div id="icon-dropdown" class="icon-dropdown" style="display: none;">
+                    <div class="icon-dropdown-category">
+                        <div class="icon-dropdown-category-title">Desktop Apps</div>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('💎', 'Gemini')">💎 Gemini</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🏛️', 'AI Studio')">🏛️ AI Studio</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('📓', 'NotebookLM')">📓 NotebookLM</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('💻', 'Visual Studio')">💻 Visual Studio</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('⚡', 'Gemini CLI')">⚡ Gemini CLI</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('⌘', 'CMD')">⌘ CMD</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🍌', 'NanoBanana')">🍌 NanoBanana</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('📝', 'Notes')">📝 Notes</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('✏️', 'Whiteboard')">✏️ Whiteboard</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('📁', 'Folder')">📁 Folder</button>
+                    </div>
+                    <div class="icon-dropdown-category">
+                        <div class="icon-dropdown-category-title">Chat Tools</div>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🤖', 'ChatGPT')">🤖 ChatGPT</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🟣', 'Perplexity')">🟣 Perplexity</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🔵', 'Z.ai')">🔵 Z.ai</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🦄', 'Grok')">🦄 Grok</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🌊', 'Deepseek')">🌊 Deepseek</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🦙', 'Claude')">🦙 Claude</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🦚', 'Qwen')">🦚 Qwen</button>
+                    </div>
+                    <div class="icon-dropdown-category">
+                        <div class="icon-dropdown-category-title">Video Tools</div>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🎞️', 'Kling')">🎞️ Kling</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🎥', 'Sora')">🎥 Sora</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('📼', 'Veo')">📼 Veo</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🐰', 'Pika')">🐰 Pika</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('⚡', 'Wan')">⚡ Wan</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🔥', 'Adobe Firefly')">🔥 Adobe Firefly</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🎬', 'LTX AI')">🎬 LTX AI</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('📹', 'Invideo AI')">📹 Invideo AI</button>
+                    </div>
+                    <div class="icon-dropdown-category">
+                        <div class="icon-dropdown-category-title">Image Tools</div>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('⛵', 'Midjourney')">⛵ Midjourney</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🎨', 'Leonardo')">🎨 Leonardo</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🔥', 'Adobe Firefly')">🔥 Adobe Firefly</button>
+                    </div>
+                    <div class="icon-dropdown-category">
+                        <div class="icon-dropdown-category-title">Audio Tools</div>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('☀️', 'Suno')">☀️ Suno</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('📈', 'Minimax')">📈 Minimax</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('⚖️', 'StabilityAI')">⚖️ StabilityAI</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🔊', 'ElevenLabs')">🔊 ElevenLabs</button>
+                    </div>
+                    <div class="icon-dropdown-category">
+                        <div class="icon-dropdown-category-title">Other Tools</div>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🤗', 'Hugging Face')">🤗 Hugging Face</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🐙', 'GitHub')">🐙 GitHub</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🎨', 'Canva')">🎨 Canva</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🧪', 'Google Labs')">🧪 Google Labs</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🧮', 'Abacus AI')">🧮 Abacus AI</button>
+                        <button class="icon-dropdown-item" onclick="addAppIcon('🌸', 'Civitai')">🌸 Civitai</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="whiteboard-canvas-container" id="canvas-container">
+        <canvas id="whiteboard-canvas"></canvas>
+    </div>
+</div>

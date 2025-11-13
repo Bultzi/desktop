@@ -1,0 +1,164 @@
+/**
+ * Folder App Styles - KI-Tools Datenbank
+ */
+
+.folder-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+    background: var(--color-background, rgba(252, 252, 249, 1));
+}
+
+.folder-tabs {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid var(--color-border, rgba(94, 82, 64, 0.2));
+    font-family: 'Comic Sans MS', 'Marker Felt', cursive, sans-serif;
+}
+
+.folder-tab {
+    padding: 12px 22px;
+    border-radius: 16px 16px 0 0;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--color-primary, rgba(33, 128, 141, 1));
+    transition: all 0.16s cubic-bezier(0.31, 1, 0.32, 1);
+    border-bottom: 2px solid transparent;
+}
+
+.folder-tab.active {
+    background: linear-gradient(135deg, #b8d4e8 40%, #e8b4d0 100%);
+    color: #fff;
+    border-bottom: 2px solid var(--color-primary, rgba(33, 128, 141, 1));
+    box-shadow: 0 2px 8px rgba(185, 212, 232, 0.17);
+}
+
+.folder-tab:hover:not(.active) {
+    background: rgba(245, 237, 224, 0.5);
+    color: var(--color-primary-hover, rgba(29, 116, 128, 1));
+}
+
+.folder-tab-content {
+    width: 100%;
+    flex: 1;
+    position: relative;
+    min-height: 300px;
+}
+
+.folder-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 20px 18px;
+    margin-top: 12px;
+    margin-bottom: 10px;
+    width: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+    justify-items: center;
+    position: absolute;
+    inset: 0;
+    padding-right: 8px;
+}
+
+.folder-tools-grid.hidden {
+    display: none;
+}
+
+.folder-tools-grid.active {
+    display: grid;
+}
+
+.folder-tool-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 12px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.31, 1, 0.32, 1);
+    border: 2px solid transparent;
+    min-width: 110px;
+    min-height: 100px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.folder-tool-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.tool-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.tool-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    text-align: center;
+    line-height: 1.2;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    word-break: break-word;
+}
+
+/* Tooltip */
+.tool-tooltip {
+    background: white;
+    border: 2px solid var(--color-border, rgba(94, 82, 64, 0.2));
+    border-radius: 12px;
+    padding: 12px 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 10001;
+    max-width: 280px;
+    pointer-events: none;
+}
+
+.tooltip-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--color-text, #2c2c2c);
+    margin-bottom: 6px;
+}
+
+.tooltip-desc {
+    font-size: 12px;
+    color: var(--color-text-secondary, rgba(98, 108, 113, 1));
+    line-height: 1.4;
+    margin-bottom: 8px;
+}
+
+.tooltip-url {
+    font-size: 11px;
+    color: var(--color-primary, rgba(33, 128, 141, 1));
+    word-break: break-all;
+    font-family: monospace;
+}
+
+/* Scrollbar Styling */
+.folder-tools-grid::-webkit-scrollbar {
+    width: 8px;
+}
+
+.folder-tools-grid::-webkit-scrollbar-track {
+    background: rgba(94, 82, 64, 0.05);
+    border-radius: 4px;
+}
+
+.folder-tools-grid::-webkit-scrollbar-thumb {
+    background: rgba(94, 82, 64, 0.2);
+    border-radius: 4px;
+}
+
+.folder-tools-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(94, 82, 64, 0.3);
+}
+

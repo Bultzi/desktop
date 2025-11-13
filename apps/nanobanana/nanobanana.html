@@ -1,0 +1,21 @@
+<div class="nanobanana-container">
+    <div class="nanobanana-inputs">
+        <div class="nanobanana-input-group">
+            <label class="nanobanana-label">Prompt</label>
+            <div class="nanobanana-prompt-row">
+                <input type="text" class="nanobanana-input" id="nano-prompt" placeholder="Beschreibe das gewünschte Bild..." onkeypress="if(event.key==='Enter') generateImage()">
+                <button class="btn-generate" onclick="generateImage()">Generieren</button>
+            </div>
+        </div>
+        <div class="nanobanana-input-group">
+            <label class="nanobanana-label">Prompt-Zusatz (wird immer mitgesendet)</label>
+            <textarea class="nanobanana-suffix" id="nano-suffix" placeholder="z.B. hochauflösend, professionell, 4K..."></textarea>
+        </div>
+    </div>
+    <div class="nanobanana-gallery">
+        <div class="gallery-grid" id="nano-gallery">
+            <div class="gallery-empty">Keine Bilder generiert. Gib einen Prompt ein und klicke auf "Generieren".</div>
+        </div>
+    </div>
+</div>
+

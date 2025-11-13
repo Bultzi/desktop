@@ -1,0 +1,40 @@
+/**
+ * Gemini CLI App Styles
+ */
+
+.terminal {
+    background: #0c0c0c;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    padding: 16px;
+    height: 100%;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.terminal-line {
+    margin-bottom: 4px;
+}
+
+.terminal-prompt {
+    color: #00ff00;
+    font-weight: bold;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    outline: none;
+}
+

@@ -1,0 +1,93 @@
+<div class="vscode-container">
+    <div class="vscode-sidebar">
+        <div class="vscode-sidebar-header">📂 EXPLORER</div>
+        <div class="vscode-file-tree">
+            <div class="vscode-folder" onclick="toggleFolder(this)">
+                <span class="folder-icon">📁</span> ai-projects
+                <div class="folder-content">
+                    <div class="vscode-file" onclick="openVSFile('ai-chatbot.js')">📄 ai-chatbot.js</div>
+                    <div class="vscode-file" onclick="openVSFile('image-generator.py')">🐍 image-generator.py</div>
+                    <div class="vscode-file" onclick="openVSFile('data-processor.py')">🐍 data-processor.py</div>
+                    <div class="vscode-file" onclick="openVSFile('api-integration.js')">📄 api-integration.js</div>
+                    <div class="vscode-file" onclick="openVSFile('config.json')">⚙️ config.json</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vscode-main">
+        <div class="vscode-tabs-container">
+            <div class="vscode-tab active" onclick="switchVSTab('ai-chatbot.js', this)">ai-chatbot.js</div>
+            <div class="vscode-tab" onclick="switchVSTab('image-generator.py', this)">image-generator.py</div>
+            <div class="vscode-tab" onclick="switchVSTab('api-integration.js', this)">api-integration.js</div>
+        </div>
+        <div class="vscode-editor-area" id="vscode-editor">
+            <div class="code-content active" id="code-ai-chatbot">
+                <div class="code-line"><span class="code-comment">// Gemini API Integration Example</span></div>
+                <div class="code-line"><span class="code-keyword">import</span> { GoogleGenerativeAI } <span class="code-keyword">from</span> <span class="code-string">'@google/generative-ai'</span>;</div>
+                <div class="code-line"></div>
+                <div class="code-line"><span class="code-comment">// Initialize the Gemini API</span></div>
+                <div class="code-line"><span class="code-keyword">const</span> genAI = <span class="code-keyword">new</span> <span class="code-function">GoogleGenerativeAI</span>(process.env.GEMINI_API_KEY);</div>
+                <div class="code-line"><span class="code-keyword">const</span> model = genAI.<span class="code-function">getGenerativeModel</span>({ model: <span class="code-string">'gemini-pro'</span> });</div>
+                <div class="code-line"></div>
+                <div class="code-line"><span class="code-comment">// Create AI Chatbot Function</span></div>
+                <div class="code-line"><span class="code-keyword">async function</span> <span class="code-function">chatWithAI</span>(userMessage) {</div>
+                <div class="code-line">  <span class="code-keyword">const</span> prompt = <span class="code-string">`Du bist ein hilfreicher KI-Assistent. ${userMessage}`</span>;</div>
+                <div class="code-line">  <span class="code-keyword">const</span> result = <span class="code-keyword">await</span> model.<span class="code-function">generateContent</span>(prompt);</div>
+                <div class="code-line">  <span class="code-keyword">const</span> response = <span class="code-keyword">await</span> result.response;</div>
+                <div class="code-line">  <span class="code-keyword">return</span> response.<span class="code-function">text</span>();</div>
+                <div class="code-line">}</div>
+            </div>
+            <div class="code-content hidden" id="code-image-generator">
+                <div class="code-line"><span class="code-comment"># Image Generation with AI</span></div>
+                <div class="code-line"><span class="code-keyword">import</span> openai</div>
+                <div class="code-line"><span class="code-keyword">from</span> PIL <span class="code-keyword">import</span> Image</div>
+                <div class="code-line"></div>
+                <div class="code-line"><span class="code-comment"># Initialize OpenAI client</span></div>
+                <div class="code-line">client = openai.OpenAI(api_key=<span class="code-string">"your-api-key"</span>)</div>
+                <div class="code-line"></div>
+                <div class="code-line"><span class="code-keyword">def</span> <span class="code-function">generate_image</span>(prompt, size=<span class="code-string">"1024x1024"</span>):</div>
+                <div class="code-line">    response = client.images.generate(</div>
+                <div class="code-line">        model=<span class="code-string">"dall-e-3"</span>,</div>
+                <div class="code-line">        prompt=prompt,</div>
+                <div class="code-line">        size=size,</div>
+                <div class="code-line">        n=<span class="code-number">1</span></div>
+                <div class="code-line">    )</div>
+                <div class="code-line">    <span class="code-keyword">return</span> response.data[<span class="code-number">0</span>].url</div>
+            </div>
+            <div class="code-content hidden" id="code-api-integration">
+                <div class="code-line"><span class="code-comment">// Multi-AI Provider Integration</span></div>
+                <div class="code-line"><span class="code-keyword">const</span> AI_PROVIDERS = {</div>
+                <div class="code-line">  openai: <span class="code-string">'https://api.openai.com/v1'</span>,</div>
+                <div class="code-line">  anthropic: <span class="code-string">'https://api.anthropic.com'</span>,</div>
+                <div class="code-line">  gemini: <span class="code-string">'https://generativelanguage.googleapis.com'</span></div>
+                <div class="code-line">};</div>
+                <div class="code-line"></div>
+                <div class="code-line"><span class="code-keyword">async function</span> <span class="code-function">callAI</span>(provider, prompt) {</div>
+                <div class="code-line">  <span class="code-keyword">const</span> config = <span class="code-function">getProviderConfig</span>(provider);</div>
+                <div class="code-line">  <span class="code-keyword">const</span> response = <span class="code-keyword">await</span> <span class="code-function">fetch</span>(config.endpoint, {</div>
+                <div class="code-line">    method: <span class="code-string">'POST'</span>,</div>
+                <div class="code-line">    headers: config.headers,</div>
+                <div class="code-line">    body: <span class="code-function">JSON.stringify</span>({ prompt })</div>
+                <div class="code-line">  });</div>
+                <div class="code-line">  <span class="code-keyword">return await</span> response.<span class="code-function">json</span>();</div>
+                <div class="code-line">}</div>
+            </div>
+        </div>
+        <div class="vscode-right-panel">
+            <div class="vscode-panel-header">🤖 KI-Helfer</div>
+            <div class="ai-helper-item" onclick="insertCodeSnippet('api-template')">📌 API Template einfügen</div>
+            <div class="ai-helper-item" onclick="insertCodeSnippet('prompt-guide')">💡 Prompt Engineering Guide</div>
+            <div class="ai-helper-item" onclick="insertCodeSnippet('libraries')">📚 Beliebte KI-Libraries</div>
+        </div>
+    </div>
+    <div class="vscode-terminal">
+        <div class="terminal-header">⚡ TERMINAL</div>
+        <div class="terminal-output">
+            <div class="terminal-line-vs"><span class="prompt">$</span> npm install @google/generative-ai</div>
+            <div class="terminal-line-vs"><span class="success">✓</span> Package installed successfully</div>
+            <div class="terminal-line-vs"><span class="prompt">$</span> node ai-chatbot.js</div>
+            <div class="terminal-line-vs"><span class="info">🤖</span> AI Response: Hallo! Ich bin bereit zu helfen.</div>
+        </div>
+    </div>
+</div>
+

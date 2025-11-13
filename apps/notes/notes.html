@@ -1,0 +1,18 @@
+<div class="notes-app-container">
+    <div class="notes-sidebar">
+        <div class="notes-sidebar-header">
+            <h3>Notizen</h3>
+            <button class="btn-new-note" onclick="createNewNote()" title="Neue Notiz">+</button>
+        </div>
+        <div class="notes-list" id="notes-list">
+            <div class="notes-empty-sidebar">Keine Notizen</div>
+        </div>
+    </div>
+    <div class="notes-main-simple">
+        <div class="notes-editor-simple" id="notes-editor" contenteditable="true" placeholder="Schreibe deine Notiz hier..."></div>
+        <div class="notes-footer-simple">
+            <button class="btn-note-delete" onclick="deleteCurrentNote()" title="Notiz löschen">🗑️ Löschen</button>
+        </div>
+    </div>
+</div>
+

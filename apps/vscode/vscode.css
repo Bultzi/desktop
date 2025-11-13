@@ -1,0 +1,212 @@
+/**
+ * VSCode App Styles
+ */
+
+.vscode-container {
+    display: flex;
+    height: 100%;
+    background: #1e1e1e;
+    color: #cccccc;
+}
+
+.vscode-sidebar {
+    width: 200px;
+    background: #252526;
+    border-right: 1px solid #3e3e42;
+}
+
+.vscode-sidebar-header {
+    padding: 8px 12px;
+    background: #2d2d30;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #cccccc;
+}
+
+.vscode-file-tree {
+    padding: 8px;
+}
+
+.vscode-folder {
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 13px;
+    user-select: none;
+}
+
+.vscode-folder:hover {
+    background: #2a2d2e;
+}
+
+.folder-content {
+    padding-left: 16px;
+    margin-top: 4px;
+    display: block;
+}
+
+.vscode-file {
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 13px;
+    user-select: none;
+}
+
+.vscode-file:hover {
+    background: #2a2d2e;
+}
+
+.vscode-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.vscode-tabs-container {
+    display: flex;
+    background: #2d2d30;
+    border-bottom: 1px solid #3e3e42;
+    overflow-x: auto;
+}
+
+.vscode-tab {
+    padding: 8px 16px;
+    background: #2d2d30;
+    border-right: 1px solid #3e3e42;
+    cursor: pointer;
+    font-size: 13px;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.vscode-tab:hover {
+    background: #37373d;
+}
+
+.vscode-tab.active {
+    background: #1e1e1e;
+    border-bottom: 2px solid #007acc;
+}
+
+.vscode-editor-area {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    background: #1e1e1e;
+    position: relative;
+}
+
+.code-content {
+    display: none;
+}
+
+.code-content.active {
+    display: block;
+}
+
+.code-content.hidden {
+    display: none;
+}
+
+.code-line {
+    margin-bottom: 2px;
+    white-space: pre;
+}
+
+.code-keyword {
+    color: #569cd6;
+}
+
+.code-string {
+    color: #ce9178;
+}
+
+.code-comment {
+    color: #6a9955;
+    font-style: italic;
+}
+
+.code-function {
+    color: #dcdcaa;
+}
+
+.code-number {
+    color: #b5cea8;
+}
+
+.vscode-right-panel {
+    width: 200px;
+    background: #252526;
+    border-left: 1px solid #3e3e42;
+    padding: 12px;
+}
+
+.vscode-panel-header {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #cccccc;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #3e3e42;
+}
+
+.ai-helper-item {
+    padding: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    transition: background 0.2s;
+}
+
+.ai-helper-item:hover {
+    background: #2a2d2e;
+}
+
+.vscode-terminal {
+    height: 150px;
+    background: #1e1e1e;
+    border-top: 1px solid #3e3e42;
+    display: flex;
+    flex-direction: column;
+}
+
+.terminal-header {
+    padding: 6px 12px;
+    background: #2d2d30;
+    font-size: 11px;
+    font-weight: 600;
+    color: #cccccc;
+    border-bottom: 1px solid #3e3e42;
+}
+
+.terminal-output {
+    flex: 1;
+    padding: 8px 12px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.terminal-line-vs {
+    margin-bottom: 4px;
+}
+
+.terminal-line-vs .prompt {
+    color: #4ec9b0;
+}
+
+.terminal-line-vs .success {
+    color: #4ec9b0;
+}
+
+.terminal-line-vs .info {
+    color: #569cd6;
+}
+

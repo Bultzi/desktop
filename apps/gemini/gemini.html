@@ -1,0 +1,19 @@
+<div class="chat-container gemini-enhanced">
+    <div class="gemini-header">
+        <div class="gemini-header-content">
+            <div class="gemini-icon-large">💎✨</div>
+            <div class="gemini-title-area">
+                <div class="gemini-app-title">Gemini</div>
+                <div class="gemini-status"><span class="status-dot"></span> Online & Bereit</div>
+            </div>
+        </div>
+        <div class="gemini-decoration">⚙️</div>
+    </div>
+    <div class="chat-messages gemini-messages" id="chat-messages"></div>
+    <div class="chat-input-container gemini-input-area">
+        <input type="text" class="chat-input gemini-input" id="chat-input" placeholder="Sag mir was... falls es wichtig ist." onkeypress="if(event.key==='Enter') sendMessage()">
+        <button class="btn-send gemini-send" onclick="sendMessage()">Senden</button>
+        <button class="btn-clear-history" onclick="clearChatHistory()" title="Verlauf löschen">🗑️</button>
+    </div>
+</div>
+

@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KI Workflow Studio Pro</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        height: 100vh;
+        overflow: hidden;
+        color: #e0e0e0;
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* DESKTOP GRID */
+    .desktop {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 20px;
+        padding: 30px;
+        height: 100vh;
+        position: relative;
+    }
+
+    /* APP WINDOW BASE */
+    .app-window {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px) saturate(180%);
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        position: relative;
+        opacity: 0;
+        transform: scale(0.8) translateY(30px);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        min-height: 0;
+    }
+
+    .app-window.active {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+
+    .app-window.minimized {
+        opacity: 0;
+        transform: scale(0) translateY(50px);
+        pointer-events: none;
+    }
+
+    /* APP HEADER */
+    .app-header {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 14px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        cursor: move;
+    }
+
+    .app-title {
+        font-weight: 600;
+        font-size: 15px;
+        letter-spacing: 0.3px;
+    }
+
+    .app-controls {
+        display: flex;
+        gap: 10px;
+    }
+
+    .control-btn {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .control-btn:hover {
+        filter: brightness(1.2);
+        transform: scale(1.2);
+    }
+
+    .close { background: #ff5f57; }
+    .minimize { background: #ffbd2e; }
+    .fullscreen { background: #28ca42; }
+
+    /* APP CONTENT */
+    .app-content {
+        padding: 25px;
+        height: calc(100% - 52px);
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255,255,255,0.2) transparent;
+    }
+
+    .app-content::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .app-content::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .app-content::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.2);
+        border-radius: 4px;
+    }
+
+    /* APP DOCK */
+    .app-dock {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        padding: 12px 25px;
+        border-radius: 30px;
+        display: flex;
+        gap: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+    }
+
+    .dock-item {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 24px;
+        position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dock-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-8px) scale(1.1);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .dock-item.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        transform: translateY(-8px);
+        box-shadow: 0 5px 25px rgba(102, 126, 234, 0.5);
+    }
+
+    .dock-label {
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 11px;
+        background: rgba(0,0,0,0.7);
+        padding: 4px 10px;
+        border-radius: 20px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+    }
+
+    .dock-item:hover .dock-label {
+        opacity: 1;
+    }
+
+    /* APP SPECIFIC STYLES */
+    /* 1. KI-Chat-Hub */
+    .chat-hub {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    .ai-selector {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .ai-pill {
+        padding: 8px 16px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.3s;
+        border: 1px solid transparent;
+    }
+
+    .ai-pill:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .ai-pill.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: rgba(255, 255, 255, 0.3);
+        box-shadow: 0 3px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .chat-area {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 16px;
+        padding: 20px;
+        height: 450px;
+        overflow-y: auto;
+        margin-bottom: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .chat-input {
+        display: flex;
+        gap: 10px;
+    }
+
+    .chat-input input {
+        flex: 1;
+        padding: 12px 18px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(0, 0, 0, 0.2);
+        color: white;
+        font-size: 14px;
+    }
+
+    .chat-input input:focus {
+        outline: none;
+        border-color: rgba(102, 126, 234, 0.5);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    }
+
+    .send-btn {
+        padding: 12px 24px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .send-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    /* 2. Notizen-Studio */
+    .notes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .note-card {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .note-card:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .note-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        opacity: 0.7;
+    }
+
+    /* 3. Gen-AI Gallery */
+    .gen-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .gen-card {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+    }
+
+    .gen-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+    }
+
+    .gen-preview {
+        height: 120px;
+        background: linear-gradient(135deg, #667eea20, #764ba220);
+        border-radius: 12px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 48px;
+        color: rgba(255,255,255,0.5);
+    }
+
+    /* 4. Workflow Canvas */
+    .flow-canvas {
+        height: 400px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 16px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* 5. Prompt Lab */
+    .prompt-editor {
+        width: 100%;
+        min-height: 150px;
+        padding: 18px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(0, 0, 0, 0.2);
+        color: white;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 13px;
+        resize: vertical;
+    }
+
+    .prompt-editor:focus {
+        outline: none;
+        border-color: rgba(102, 126, 234, 0.5);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    }
+
+    /* 6. Ausgabe-Monitor */
+    .output-viewer {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 16px;
+        padding: 20px;
+        height: 400px;
+        font-family: 'Fira Code', monospace;
+        font-size: 13px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Animationen */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .desktop {
+            grid-template-columns: 1fr 1fr;
+        }
+        .chat-hub {
+            grid-column: span 2;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .desktop {
+            grid-template-columns: 1fr;
+        }
+        .chat-hub {
+            grid-column: span 1;
+        }
+    }
+</style>
+<base target="_blank">
+</head>
+<body>
+<div class="desktop">
+    <!-- 1. KI-Chat-Hub -->
+    <div class="app-window chat-hub" id="chatApp">
+        <div class="app-header">
+            <span class="app-title">🚀 KI-Chat Hub</span>
+            <div class="app-controls">
+                <div class="control-btn minimize" onclick="minimizeApp('chatApp')"></div>
+                <div class="control-btn fullscreen" onclick="toggleFullscreen('chatApp')"></div>
+                <div class="control-btn close" onclick="closeApp('chatApp')"></div>
+            </div>
+        </div>
+        <div class="app-content">
+            <div class="ai-selector">
+                <div class="ai-pill active" data-ai="kimi">Kimi</div>
+                <div class="ai-pill" data-ai="gpt">ChatGPT-4</div>
+                <div class="ai-pill" data-ai="claude">Claude</div>
+                <div class="ai-pill" data-ai="gemini">Gemini</div>
+                <div class="ai-pill" data-ai="grok">Grok</div>
+                <div class="ai-pill" data-ai="perplexity">Perplexity</div>
+            </div>
+            <div class="chat-area" id="chatArea">
+                <div style="color: rgba(255,255,255,0.5); text-align: center; margin-top: 20px;">
+                    💬 Wähle ein KI-Modell und starte die Konversation...
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Deine Nachricht an Kimi...">
+                <button class="send-btn" onclick="sendMessage()">Senden</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Notizen-Studio -->
+    <div class="app-window" id="notesApp">
+        <div class="app-header">
+            <span class="app-title">📝 Notizen Studio</span>
+            <div class="app-controls">
+                <div class="control-btn minimize" onclick="minimizeApp('notesApp')"></div>
+                <div class="control-btn fullscreen" onclick="toggleFullscreen('notesApp')"></div>
+                <div class="control-btn close" onclick="closeApp('notesApp')"></div>
+            </div>
+        </div>
+        <div class="app-content">
+            <div class="notes-grid">
+                <div class="note-card" onclick="editNote(this)">
+                    <h4>Content Ideen</h4>
+                    <p>5 Video-Themen für nächste Woche...</p>
+                </div>
+                <div class="note-card" onclick="editNote(this)">
+                    <h4>Workflow Optimierung</h4>
+                    <p>KI-Pipeline: Research → Script → Visual...</p>
+                </div>
+                <div class="note-card" onclick="editNote(this)">
+                    <h4>Prompt Templates</h4>
+                    <p>YouTube Hook-Formeln...</p>
+                </div>
+                <div class="note-card" onclick="editNote(this)">
+                    <h4>KI Tool Vergleich</h4>
+                    <p>Preise & Features 2024...</p>
+                </div>
+                <div class="note-card" onclick="addNewNote()">
+                    <div style="text-align: center; color: rgba(255,255,255,0.5); padding: 30px 0;">
+                        <div style="font-size: 36px;">+</div>
+                        <p>Neue Notiz</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Gen-AI Gallery -->
+    <div class="app-window" id="genApp">
+        <div class="app-header">
+            <span class="app-title">🎨 Gen-AI Gallery</span>
+            <div class="app-controls">
+                <div class="control-btn minimize" onclick="minimizeApp('genApp')"></div>
+                <div class="control-btn fullscreen" onclick="toggleFullscreen('genApp')"></div>
+                <div class="control-btn close" onclick="closeApp('genApp')"></div>
+            </div>
+        </div>
+        <div class="app-content">
+            <div class="gen-grid">
+                <div class="gen-card">
+                    <div class="gen-preview">🖼️</div>
+                    <h4>Midjourney</h4>
+                    <p>Text-to-Image</p>
+                </div>
+                <div class="gen-card">
+                    <div class="gen-preview">🎬</div>
+                    <h4>Runway ML</h4>
+                    <p>Video Generation</p>
+                </div>
+                <div class="gen-card">
+                    <div class="gen-preview">🎵</div>
+                    <h4>Suno AI</h4>
+                    <p>Music Creation</p>
+                </div>
+                <div class="gen-card">
+                    <div class="gen-preview">🎭</div>
+                    <h4>Stable Diffusion</h4>
+                    <p>Local Generation</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Workflow Canvas -->
+    <div class="app-window" id="flowApp">
+        <div class="app-header">
+            <span class="app-title">🔄 Workflow Canvas</span>
+            <div class="app-controls">
+                <div class="control-btn minimize" onclick="minimizeApp('flowApp')"></div>
+                <div class="control-btn fullscreen" onclick="toggleFullscreen('flowApp')"></div>
+                <div class="control-btn close" onclick="closeApp('flowApp')"></div>
+            </div>
+        </div>
+        <div class="app-content">
+            <div class="flow-canvas" id="flowCanvas">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: rgba(255,255,255,0.3); text-align: center;">
+                    <div style="font-size: 48px; margin-bottom: 10px;">🎬</div>
+                    <p>Workflow Builder (Drag & Drop)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Prompt Lab -->
+    <div class="app-window" id="promptApp">
+        <div class="app-header">
+            <span class="app-title">🔬 Prompt Lab</span>
+            <div class="app-controls">
+                <div class="control-btn minimize" onclick="minimizeApp('promptApp')"></div>
+                <div class="control-btn fullscreen" onclick="toggleFullscreen('promptApp')"></div>
+                <div class="control-btn close" onclick="closeApp('promptApp')"></div>
+            </div>
+        </div>
+        <div class="app-content">
+            <textarea class="prompt-editor" placeholder="Schreibe oder optimiere deinen Prompt hier...
+
+Beispiel:
+'Akt als erfahrener KI-Workflow Experte. Erstelle ein YouTube-Script über...'"></textarea>
+            <button class="send-btn" style="margin-top: 15px; width: 100%;">Prompt Analysieren & Optimieren</button>
+        </div>
+    </div>
+
+    <!-- 6. Ausgabe-Monitor -->
+    <div class="app-window" id="outputApp">
+        <div class="app-header">
+            <span class="app-title">📊 Ausgabe-Monitor</span>
+            <div class="app-controls">
+                <div class="control-btn minimize" onclick="minimizeApp('outputApp')"></div>
+                <div class="control-btn fullscreen" onclick="toggleFullscreen('outputApp')"></div>
+                <div class="control-btn close" onclick="closeApp('outputApp')"></div>
+            </div>
+        </div>
+        <div class="app-content">
+            <div class="output-viewer" id="outputViewer">
+// KI-Workflow Studio Pro v1.0
+// Alle Systeme aktiv...
+
+📈 Performance Metrics:
+• Token-Verbrauch: 0
+• API-Aufrufe: 0
+• Gen. Inhalte: 0
+
+🎯 Nächster Schritt:
+Wähle eine App aus dem Dock unten...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- APP DOCK -->
+<div class="app-dock">
+    <div class="dock-item active" onclick="toggleApp('chatApp')" data-app="chatApp">
+        💬
+        <div class="dock-label">KI-Chat</div>
+    </div>
+    <div class="dock-item active" onclick="toggleApp('notesApp')" data-app="notesApp">
+        📝
+        <div class="dock-label">Notizen</div>
+    </div>
+    <div class="dock-item active" onclick="toggleApp('genApp')" data-app="genApp">
+        🎨
+        <div class="dock-label">Gen-AI</div>
+    </div>
+    <div class="dock-item active" onclick="toggleApp('flowApp')" data-app="flowApp">
+        🔄
+        <div class="dock-label">Workflow</div>
+    </div>
+    <div class="dock-item active" onclick="toggleApp('promptApp')" data-app="promptApp">
+        🔬
+        <div class="dock-label">Prompt Lab</div>
+    </div>
+    <div class="dock-item active" onclick="toggleApp('outputApp')" data-app="outputApp">
+        📊
+        <div class="dock-label">Ausgabe</div>
+    </div>
+    <div class="dock-item" onclick="resetStudio()">
+        🔄
+        <div class="dock-label">Reset</div>
+    </div>
+</div>
+
+<script>
+    // App State Management
+    const appState = {
+        chatApp: true,
+        notesApp: true,
+        genApp: true,
+        flowApp: true,
+        promptApp: true,
+        outputApp: true
+    };
+
+    // Toggle App Visibility
+    function toggleApp(appId) {
+        const app = document.getElementById(appId);
+        const dockItem = document.querySelector(`[data-app="${appId}"]`);
+        
+        appState[appId] = !appState[appId];
+        
+        if (appState[appId]) {
+            app.classList.add('active');
+            app.classList.remove('minimized');
+            dockItem.classList.add('active');
+        } else {
+            app.classList.remove('active');
+            app.classList.add('minimized');
+            dockItem.classList.remove('active');
+        }
+        
+        updateOutput(`App ${appId} ${appState[appId] ? 'aktiviert' : 'deaktiviert'}`);
+    }
+
+    // Minimize App
+    function minimizeApp(appId) {
+        const app = document.getElementById(appId);
+        app.classList.remove('active');
+        app.classList.add('minimized');
+        appState[appId] = false;
+        
+        const dockItem = document.querySelector(`[data-app="${appId}"]`);
+        dockItem.classList.remove('active');
+        
+        updateOutput(`App ${appId} minimiert`);
+    }
+
+    // Close App (verstecken)
+    function closeApp(appId) {
+        minimizeApp(appId);
+        updateOutput(`App ${appId} geschlossen`);
+    }
+
+    // Fullscreen Toggle
+    function toggleFullscreen(appId) {
+        const app = document.getElementById(appId);
+        app.style.gridColumn = app.style.gridColumn === 'span 3' ? '' : 'span 3';
+        app.style.gridRow = app.style.gridRow === 'span 3' ? '' : 'span 3';
+        updateOutput(`App ${appId} Vollbildmodus getoggelt`);
+    }
+
+    // KI-Chat Funktionalität
+    let currentAI = 'kimi';
+    
+    document.querySelectorAll('.ai-pill').forEach(pill => {
+        pill.addEventListener('click', function() {
+            document.querySelectorAll('.ai-pill').forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            currentAI = this.dataset.ai;
+            document.getElementById('chatInput').placeholder = `Deine Nachricht an ${currentAI.toUpperCase()}...`;
+            updateOutput(`KI-Modell gewechselt zu: ${currentAI}`);
+        });
+    });
+
+    function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        
+        if (!message) return;
+        
+        const chatArea = document.getElementById('chatArea');
+        
+        // Benutzer Nachricht
+        const userMsg = document.createElement('div');
+        userMsg.className = 'fade-in';
+        userMsg.style.cssText = 'margin-bottom: 15px; text-align: right;';
+        userMsg.innerHTML = `<div style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 10px 15px; border-radius: 18px 18px 4px 18px; max-width: 80%;">${message}</div>`;
+        chatArea.appendChild(userMsg);
+        
+        // KI Antwort simulieren
+        setTimeout(() => {
+            const aiMsg = document.createElement('div');
+            aiMsg.className = 'fade-in';
+            aiMsg.style.cssText = 'margin-bottom: 15px;';
+            aiMsg.innerHTML = `<div style="display: inline-block; background: rgba(255,255,255,0.1); padding: 10px 15px; border-radius: 18px 18px 18px 4px; max-width: 80%;">
+                <div style="font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 4px;">${currentAI.toUpperCase()} antwortet...</div>
+                Ich simuliere eine intelligente Antwort von ${currentAI} zu: "${message}"<br><br>
+                ✅ Analyse abgeschlossen<br>
+                🎯 Relevante Daten extrahiert<br>
+                📊 Antwort generiert
+            </div>`;
+            chatArea.appendChild(aiMsg);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            updateOutput(`Nachricht an ${currentAI} gesendet`);
+        }, 1000);
+        
+        input.value = '';
+        chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    // Enter to Send
+    document.getElementById('chatInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    // Notizen Funktionalität
+    function editNote(element) {
+        const title = element.querySelector('h4').textContent;
+        const content = element.querySelector('p').textContent;
+        alert(`Notiz bearbeiten:\n\nTitel: ${title}\nInhalt: ${content}\n\n(In echter App: Modal mit Editor)`);
+        updateOutput(`Notiz bearbeitet: ${title}`);
+    }
+
+    function addNewNote() {
+        const title = prompt('Notiz-Titel:');
+        if (title) {
+            updateOutput(`Neue Notiz erstellt: ${title}`);
+        }
+    }
+
+    // Output Monitor
+    function updateOutput(message) {
+        const output = document.getElementById('outputViewer');
+        const timestamp = new Date().toLocaleTimeString('de-DE');
+        output.innerHTML = `[${timestamp}] ${message}\n` + output.innerHTML;
+    }
+
+    // Reset Studio
+    function resetStudio() {
+        Object.keys(appState).forEach(appId => {
+            appState[appId] = true;
+            const app = document.getElementById(appId);
+            app.classList.add('active');
+            app.classList.remove('minimized');
+            app.style.gridColumn = '';
+            app.style.gridRow = '';
+            
+            const dockItem = document.querySelector(`[data-app="${appId}"]`);
+            dockItem.classList.add('active');
+        });
+        
+        document.getElementById('outputViewer').innerHTML = `// KI-Workflow Studio Pro v1.0
+// Alle Systeme zurückgesetzt...
+
+${new Date().toLocaleTimeString('de-DE')} ✅ Studio zurückgesetzt
+`;
+        alert('Studio wurde zurückgesetzt!');
+    }
+
+    // Initiale Ausgabe
+    setTimeout(() => {
+        updateOutput('✅ KI-Workflow Studio erfolgreich geladen');
+        updateOutput('🎯 Bereit für Aufnahme');
+    }, 1000);
+</script>
+</body>
+</html>
