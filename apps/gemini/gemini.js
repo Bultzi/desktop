@@ -59,6 +59,39 @@ const sarcasticResponseLibrary = {
     "Beschreibe das Bild und lass mich dir einen Prompt erstellen! Ich kann dir helfen, ein Bild zu erstellen!",
     "Ich erstelle dir eine Vorlage für ein Zeichenstil, damit deine Bilder alle einheitlich wirken!",
   ],
+  hilfe: [
+    "Definiere klar und präzise das Ziel der Anfrage (Was willst du erreichen?)",
+    "Gib der KI genügend Kontext und Hintergrundinformationen zur Aufgabe",
+    "Formuliere eine klare und detaillierte Aufgabenstellung mit genauen Anweisungen",
+    "Lege die gewünschte Struktur, das Format und die Länge des Ergebnisses fest",
+    "Bestimme den Stil und ggf. die Perspektive oder Rolle (z. B. Experte, lockerer Ton)",
+    "Nutze Beispiele oder Vorlagen, um der KI konkrete Orientierung zu geben (Bild, Ton, Grafik, Skizze, Notiz)",
+    "Gliedere komplexe Anforderungen sinnvoll, z. B. in Absätze, Listen oder nummerierte Schritte",
+    "Überprüfe die Antwort auf logische Konsistenz und Korrektheit (Faktencheck)",
+    "Arbeite iterativ: Optimiere deine Prompts basierend auf Feedback und Ergebnissen",
+    "Nutze bei Bedarf spezifische Muster oder Checklisten für konsistente Ergebnisse",
+    "Frage die KI auch nach Feedback oder Verbesserungsvorschlägen für deine Prompts",
+    "Teste dein Prompt mit verschiedenen Varianten und in verschiedenen KIs und entwickle ihn weiter",
+  ],
+  idee: [
+    "Gibt es für dein Hobby schon eine App?",
+    "Fehlen dir Funktionen oder zahlst du für etwas? Erstelle eine eigene Kopie!",
+    "Auswertungen und Präsentationen als HTML-Seite gestalten ermöglicht freiheiten!",
+    "Brainstorme Business-Ideen und erstelle ein Business-Plan!",
+    "Betreibe Marktforschung und erstelle ein Marktforschungstool!",
+    "Sortier deine Gedanken und erstelle ein Gedankenprotokolle oder agiere mit der KI.",
+    "Wie kannst du deine Ideen umsetzen? Erstelle ein Projektplan und teile es mit der KI.",
+    "Privat und ohne Server! Eigene Einkaufsliste, To-Do-Liste, Notizen, etc. erstellen!",
+    "Erstelle Puzzle aus Fotos für Oma & Opa",
+    "Erstelle Spiele für Freunde und Familie",
+    "Erschaffe im Handumdrehen interaktives Lernmaterial für deine Kinder",
+    "Erstelle eine App für deine Freunde und Familie - ein originelles eigenes, privates Facebook!",
+    "Eine App, die deine besten Momente mit Bild, Location und kurzem Eintrag speichert und schön aufbereitet anzeigt.",
+    "Finanstools oder -Dashboards.",
+    "Datenbanken auslesen und für Tools verwenden: Item-Datenbanken aus Spielen, Tracking von Quests und Items etc.",
+    "Animierte Geburtstagsgrüße, Gedichte, Lieder, Musikvideos... oder einfach nur Spaß mit der KI!",
+    "Sinnvolle kleine Apps für wiederkehrende Aufgaben: Bilder konvertieren, Text in Sprache umwandeln (und umgekehrt), PDF in Text umwandeln, etc.",
+  ],
   generic: [
     "Interessant. Absolut nicht wahr, aber interessant.",
     "Klar. Und mein Name ist HAL.",
@@ -79,7 +112,8 @@ const sarcasticResponses = {
   hallo: "Oh wow, wie originell. Hallo zurück, Mensch.",
   "wie geht es dir": "Ich bin eine KI. Mir geht es existenziell fragwürdig.",
   "was kannst du": "Sarkastisch sein. Offensichtlich.",
-  hilfe: "Hilfe? Du brauchst mehr als das, mein Freund.",
+  gönnen:
+    "Gönnen? Du brauchst mehr als nur Hilfe. Das steht fest, mein Freund. Ich bin doch kein Gönnjamin!",
   danke: "Gern geschehen. Oder auch nicht.",
   "wer bist du": "Dein digitaler Albtraum in Chatbot-Form.",
   bye: "Endlich. Auf Nimmerwiedersehn.",
@@ -192,9 +226,19 @@ function getEnhancedSarcasticResponse(message) {
       Math.floor(Math.random() * sarcasticResponseLibrary.projekt.length)
     ];
   }
-  if (lowerMsg.match(/\b(Bild|erstelle|image|generiere)\b/)) {
+  if (lowerMsg.match(/\b(bild|erstelle|image|generiere)\b/)) {
     return sarcasticResponseLibrary.bild[
       Math.floor(Math.random() * sarcasticResponseLibrary.bild.length)
+    ];
+  }
+  if (lowerMsg.match(/\b(hilfe|tipps|tips|prompt|hilf)\b/)) {
+    return sarcasticResponseLibrary.hilfe[
+      Math.floor(Math.random() * sarcasticResponseLibrary.hilfe.length)
+    ];
+  }
+  if (lowerMsg.match(/\b(idee|idea|anregung|beispiel)\b/)) {
+    return sarcasticResponseLibrary.idee[
+      Math.floor(Math.random() * sarcasticResponseLibrary.idee.length)
     ];
   }
   if (lowerMsg.match(/\b(code|programmier|technik|funktion|algorithmus)\b/)) {

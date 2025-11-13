@@ -1,5 +1,5 @@
 /**
- * AI Studio App Styles
+ * AI Studio Vibe-Coding App Styles
  */
 
 .ai-studio-builder {
@@ -7,43 +7,11 @@
     height: 100%;
 }
 
-.builder-sidebar {
-    width: 200px;
-    background: #f5f5f5;
-    border-right: 2px solid #e0e0e0;
-    padding: 16px;
-}
-
-.sidebar-title {
-    font-weight: 600;
-    margin-bottom: 12px;
-    font-size: 14px;
-}
-
-.component-palette {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.palette-item {
-    padding: 12px;
-    background: white;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    cursor: move;
-    transition: all 0.2s;
-}
-
-.palette-item:hover {
-    background: #f0f0f0;
-    border-color: #2196f3;
-}
-
 .builder-canvas {
     flex: 1;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .canvas-header {
@@ -60,44 +28,81 @@
     background: #fafafa;
     position: relative;
     overflow: auto;
+    padding-bottom: 80px; /* Platz für Input-Feld */
 }
 
-.canvas-placeholder-item {
-    position: absolute;
+/* Chat Input Container */
+.chat-input-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding: 16px;
     background: white;
-    border: 2px dashed #ccc;
+    border-top: 2px solid #e0e0e0;
+    z-index: 1000;
+}
+
+.vibe-input {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    display: block;
+    padding: 12px 16px;
+    font-size: 14px;
+    border: 2px solid #e0e0e0;
     border-radius: 8px;
-    min-width: 100px;
-    min-height: 60px;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.vibe-input:focus {
+    border-color: #2196f3;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* App Elemente */
+.app-element {
+    position: absolute;
+    width: 150px;
+    height: 120px;
+    padding: 16px;
+    background: white;
+    border: 2px solid;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    cursor: move;
-    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeInScale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-.canvas-placeholder-item:hover {
-    border-color: #2196f3;
-    background: #f0f7ff;
+.app-element:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.canvas-placeholder-item.selected {
-    border-color: #2196f3;
-    border-style: solid;
-    border-width: 2px;
-    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
-}
-
-.placeholder-label {
+.element-label {
     font-size: 12px;
     color: #666;
     margin-bottom: 8px;
     font-weight: 500;
 }
 
-.placeholder-icon {
-    font-size: 24px;
+.element-icon {
+    font-size: 32px;
 }
 
+/* Animationen */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
