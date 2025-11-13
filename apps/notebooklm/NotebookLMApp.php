@@ -9,5 +9,9 @@ class NotebookLMApp extends BaseApp {
     public function getJS() {
         return $this->loadJS();
     }
+
+    public function getInitFunction() {
+        return 'initNotebookLMApp';
+    }
 }
 

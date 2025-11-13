@@ -134,6 +134,13 @@ body {
     min-height: 700px;
 }
 
+.window.notebooklm-window {
+    width: 1000px;
+    height: 700px;
+    min-width: 900px;
+    min-height: 600px;
+}
+
 .window-header {
     background: var(--color-surface, #ffffff);
     padding: var(--space-12, 12px) var(--space-16, 16px);

@@ -79,6 +79,8 @@ function loadAppWindow(windowId, appId, appConfig) {
                 appWindow.className = 'window vscode-window';
             } else if (appId === 'folder') {
                 appWindow.className = 'window folder-window';
+            } else if (appId === 'notebooklm') {
+                appWindow.className = 'window notebooklm-window';
             }
             
             appWindow.innerHTML = `
@@ -91,7 +93,7 @@ function loadAppWindow(windowId, appId, appConfig) {
                         <button class="window-btn btn-close" onclick="closeWindow('${windowId}')"></button>
                     </div>
                 </div>
-                <div class="window-content" id="content-${windowId}" style="padding: ${appId === 'gemini' || appId === 'notes' || appId === 'whiteboard' ? '0' : '20px'};">
+                <div class="window-content" id="content-${windowId}" style="padding: ${appId === 'gemini' || appId === 'notes' || appId === 'whiteboard' || appId === 'notebooklm' ? '0' : '20px'};">
                     ${data.html || '<div style="padding: 20px;">Kein Inhalt verfügbar</div>'}
                 </div>
             `;

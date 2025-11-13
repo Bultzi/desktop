@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NotebookLM Demo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: #1a1a1a;
+        color: #e0e0e0;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .container {
+        display: flex;
+        height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 320px;
+        background: #202020;
+        border-right: 1px solid #333;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar-header {
+        padding: 20px;
+        border-bottom: 1px solid #333;
+      }
+
+      .sidebar-header h1 {
+        font-size: 20px;
+        font-weight: 500;
+        color: #fff;
+      }
+
+      .upload-area {
+        padding: 20px;
+        border-bottom: 1px solid #333;
+      }
+
+      .upload-button {
+        width: 100%;
+        padding: 12px;
+        background: #2d4a3c;
+        border: 1px solid #4a7c6f;
+        border-radius: 8px;
+        color: #8ab8a7;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s;
+      }
+
+      .upload-button:hover {
+        background: #3a5d4e;
+      }
+
+      .sources-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+      }
+
+      .sources-list h3 {
+        font-size: 12px;
+        text-transform: uppercase;
+        color: #888;
+        margin-bottom: 12px;
+      }
+
+      .source-card {
+        background: #2a2a2a;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .source-card:hover {
+        border-color: #4a7c6f;
+        background: #2d2d2d;
+      }
+
+      .source-card.selected {
+        border-color: #4a7c6f;
+        background: #2d4a3c;
+      }
+
+      .source-title {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 4px;
+        color: #fff;
+      }
+
+      .source-meta {
+        font-size: 12px;
+        color: #888;
+      }
+
+      /* Main Content */
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .tabs {
+        display: flex;
+        background: #202020;
+        border-bottom: 1px solid #333;
+      }
+
+      .tab {
+        padding: 16px 24px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+        font-size: 14px;
+      }
+
+      .tab.active {
+        border-bottom-color: #8ab8a7;
+        color: #8ab8a7;
+      }
+
+      .tab:hover {
+        background: #2a2a2a;
+      }
+
+      .content-area {
+        flex: 1;
+        padding: 24px;
+        overflow-y: auto;
+      }
+
+      /* Chat Area */
+      .chat-container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .chat-message {
+        margin-bottom: 24px;
+        animation: fadeIn 0.3s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message-bubble {
+        padding: 16px;
+        border-radius: 12px;
+        background: #2a2a2a;
+        border: 1px solid #333;
+        max-width: 85%;
+      }
+
+      .message-bubble.user {
+        margin-left: auto;
+        background: #2d4a3c;
+        border-color: #4a7c6f;
+      }
+
+      .message-text {
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .citation-tags {
+        margin-top: 12px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .citation-tag {
+        background: #3a3a3a;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #8ab8a7;
+        cursor: pointer;
+      }
+
+      .chat-input-container {
+        border-top: 1px solid #333;
+        padding: 20px;
+        background: #202020;
+      }
+
+      .chat-input-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .chat-input {
+        width: 100%;
+        padding: 12px 16px;
+        background: #2a2a2a;
+        border: 1px solid #333;
+        border-radius: 8px;
+        color: #e0e0e0;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.2s;
+      }
+
+      .chat-input:focus {
+        border-color: #4a7c6f;
+      }
+
+      .send-button {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: #4a7c6f;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      /* Notes Area */
+      .notes-container {
+        display: none;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .note-card {
+        background: #2a2a2a;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+
+      .note-title {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        color: #fff;
+      }
+
+      .note-content {
+        font-size: 14px;
+        line-height: 1.6;
+        color: #ccc;
+      }
+
+      .inline-citation {
+        background: #3a3a3a;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #8ab8a7;
+        cursor: pointer;
+      }
+
+      .add-note-button {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 56px;
+        height: 56px;
+        background: #4a7c6f;
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        transition: all 0.2s;
+      }
+
+      .add-note-button:hover {
+        transform: scale(1.1);
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background: #2a2a2a;
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 24px;
+        width: 90%;
+        max-width: 500px;
+      }
+
+      .modal-header {
+        font-size: 18px;
+        margin-bottom: 16px;
+        color: #fff;
+      }
+
+      .modal-input {
+        width: 100%;
+        padding: 12px;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 6px;
+        color: #e0e0e0;
+        margin-bottom: 12px;
+        font-size: 14px;
+      }
+
+      .modal-buttons {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+      }
+
+      .modal-button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .modal-button.primary {
+        background: #4a7c6f;
+        color: white;
+      }
+
+      .modal-button.secondary {
+        background: #3a3a3a;
+        color: #ccc;
+      }
+
+      .intro-message {
+        text-align: center;
+        color: #666;
+        padding: 60px 20px;
+      }
+
+      .intro-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+    </style>
+    <base target="_blank" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h1>📚 Mein Notebook</h1>
+        </div>
+        <div class="upload-area">
+          <button class="upload-button" onclick="simulateUpload()">
+            + Quellen hinzufügen
+          </button>
+        </div>
+        <div class="sources-list">
+          <h3>Quellen</h3>
+          <div id="sourcesList">
+            <div class="source-card" onclick="selectSource(this)">
+              <div class="source-title">📝 Projektbericht Q4</div>
+              <div class="source-meta">Hochgeladen vor 2 Tagen</div>
+            </div>
+            <div class="source-card" onclick="selectSource(this)">
+              <div class="source-title">📊 Marktanalyse 2024</div>
+              <div class="source-meta">Hochgeladen vor 1 Woche</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab('chat')">Chat</div>
+          <div class="tab" onclick="switchTab('notes')">Notizen</div>
+        </div>
+
+        <div class="content-area">
+          <!-- Chat Area -->
+          <div id="chatArea" class="chat-container">
+            <div class="intro-message">
+              <div class="intro-icon">🤖</div>
+              <h2>Stellen Sie Fragen zu Ihren Dokumenten</h2>
+              <p>Wählen Sie eine Quelle aus und starten Sie die Unterhaltung</p>
+            </div>
+          </div>
+
+          <!-- Notes Area -->
+          <div id="notesArea" class="notes-container">
+            <div class="note-card">
+              <div class="note-title">Wichtige Erkenntnisse</div>
+              <div class="note-content">
+                Die Marktanalyse zeigt ein Wachstum von 23% im Q4.
+                <span class="inline-citation">[1]</span> Dies entspricht den
+                Prognosen aus dem Projektbericht.
+                <span class="inline-citation">[2]</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div
+          class="chat-input-container"
+          id="chatInputContainer"
+          style="display: none"
+        >
+          <div class="chat-input-wrapper">
+            <input
+              type="text"
+              class="chat-input"
+              id="chatInput"
+              placeholder="Fragen Sie etwas zu Ihren Dokumenten..."
+              onkeypress="handleKeyPress(event)"
+            />
+            <button class="send-button" onclick="sendMessage()">Senden</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Note Button -->
+    <button
+      class="add-note-button"
+      onclick="showAddNoteModal()"
+      id="addNoteBtn"
+      style="display: none"
+    >
+      +
+    </button>
+
+    <!-- Add Note Modal -->
+    <div class="modal" id="noteModal">
+      <div class="modal-content">
+        <div class="modal-header">Neue Notiz erstellen</div>
+        <input
+          type="text"
+          class="modal-input"
+          id="noteTitle"
+          placeholder="Titel"
+        />
+        <textarea
+          class="modal-input"
+          id="noteContent"
+          rows="4"
+          placeholder="Inhalt"
+        ></textarea>
+        <div class="modal-buttons">
+          <button class="modal-button secondary" onclick="closeModal()">
+            Abbrechen
+          </button>
+          <button class="modal-button primary" onclick="addNote()">
+            Hinzufügen
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentTab = "chat";
+      let selectedSource = null;
+      let messageCount = 0;
+
+      const sampleResponses = [
+        `Basierend auf Ihren Dokumenten kann ich Ihnen sagen, dass die Marktanalyse ein Wachstum von 23% im Q4 zeigt. Diese Zahl wird durch mehrere Faktoren gestützt, die im Projektbericht detailliert erläutert werden.`,
+
+        `Ich sehe in Ihren Quellen, dass dies den ursprünglichen Prognosen entspricht. Die wichtigsten Treiber sind:
+• Erhöhte Nachfrage im B2B-Bereich
+• Erfolgreiche Produktlaunchs
+• Verbesserte Lieferketteneffizienz`,
+
+        `Laut Projektbericht wird dieses Wachstum voraussichtlich im nächsten Quartal anhalten, mit einer prognostizierten Rate von 18-22%.`,
+      ];
+
+      function switchTab(tab) {
+        currentTab = tab;
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) => t.classList.remove("active"));
+        event.target.classList.add("active");
+
+        if (tab === "chat") {
+          document.getElementById("chatArea").style.display = "block";
+          document.getElementById("notesArea").style.display = "none";
+          document.getElementById("chatInputContainer").style.display =
+            selectedSource ? "block" : "none";
+          document.getElementById("addNoteBtn").style.display = "none";
+        } else {
+          document.getElementById("chatArea").style.display = "none";
+          document.getElementById("notesArea").style.display = "block";
+          document.getElementById("chatInputContainer").style.display = "none";
+          document.getElementById("addNoteBtn").style.display = "block";
+        }
+      }
+
+      function selectSource(element) {
+        document
+          .querySelectorAll(".source-card")
+          .forEach((card) => card.classList.remove("selected"));
+        element.classList.add("selected");
+        selectedSource = element;
+
+        if (currentTab === "chat") {
+          document.getElementById("chatInputContainer").style.display = "block";
+        }
+
+        // Clear intro message
+        const chatArea = document.getElementById("chatArea");
+        if (chatArea.querySelector(".intro-message")) {
+          chatArea.innerHTML = "";
+        }
+      }
+
+      function handleKeyPress(event) {
+        if (event.key === "Enter") {
+          sendMessage();
+        }
+      }
+
+      function sendMessage() {
+        const input = document.getElementById("chatInput");
+        const message = input.value.trim();
+
+        if (!message || !selectedSource) return;
+
+        const chatArea = document.getElementById("chatArea");
+
+        // Add user message
+        const userMessage = createMessageElement(message, "user");
+        chatArea.appendChild(userMessage);
+
+        // Clear input
+        input.value = "";
+
+        // Simulate AI response
+        setTimeout(() => {
+          const aiMessage = createMessageElement(
+            sampleResponses[messageCount % sampleResponses.length],
+            "ai"
+          );
+          chatArea.appendChild(aiMessage);
+
+          // Add citations
+          const citations = aiMessage.querySelector(".citation-tags");
+          if (messageCount % 2 === 0) {
+            citations.innerHTML =
+              '<div class="citation-tag">[1] Marktanalyse 2024</div>';
+          } else {
+            citations.innerHTML = `
+                        <div class="citation-tag">[2] Projektbericht Q4</div>
+                        <div class="citation-tag">[1] Marktanalyse 2024</div>
+                    `;
+          }
+
+          messageCount++;
+          chatArea.scrollTop = chatArea.scrollHeight;
+        }, 1000);
+
+        chatArea.scrollTop = chatArea.scrollHeight;
+      }
+
+      function createMessageElement(text, sender) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = "chat-message";
+
+        const bubbleDiv = document.createElement("div");
+        bubbleDiv.className = `message-bubble ${sender}`;
+
+        const textDiv = document.createElement("div");
+        textDiv.className = "message-text";
+        textDiv.textContent = text;
+
+        const citationsDiv = document.createElement("div");
+        citationsDiv.className = "citation-tags";
+
+        bubbleDiv.appendChild(textDiv);
+        bubbleDiv.appendChild(citationsDiv);
+        messageDiv.appendChild(bubbleDiv);
+
+        return messageDiv;
+      }
+
+      function simulateUpload() {
+        const sourcesList = document.getElementById("sourcesList");
+        const newSource = document.createElement("div");
+        newSource.className = "source-card";
+        newSource.onclick = function () {
+          selectSource(this);
+        };
+
+        const titles = [
+          "📄 Strategiedokument",
+          "📈 Verkaufsdaten",
+          "📋 Meetingprotokoll",
+        ];
+        const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+
+        newSource.innerHTML = `
+                <div class="source-title">${randomTitle}</div>
+                <div class="source-meta">Gerade eben hochgeladen</div>
+            `;
+
+        sourcesList.appendChild(newSource);
+        selectSource(newSource);
+      }
+
+      function showAddNoteModal() {
+        document.getElementById("noteModal").style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("noteModal").style.display = "none";
+        document.getElementById("noteTitle").value = "";
+        document.getElementById("noteContent").value = "";
+      }
+
+      function addNote() {
+        const title = document.getElementById("noteTitle").value.trim();
+        const content = document.getElementById("noteContent").value.trim();
+
+        if (!title || !content) return;
+
+        const notesArea = document.getElementById("notesArea");
+        const noteCard = document.createElement("div");
+        noteCard.className = "note-card";
+
+        noteCard.innerHTML = `
+                <div class="note-title">${title}</div>
+                <div class="note-content">${content}</div>
+            `;
+
+        notesArea.appendChild(noteCard);
+        closeModal();
+
+        // Scroll to new note
+        notesArea.scrollTop = notesArea.scrollHeight;
+      }
+
+      // Close modal when clicking outside
+      window.onclick = function (event) {
+        const modal = document.getElementById("noteModal");
+        if (event.target === modal) {
+          closeModal();
+        }
+      };
+    </script>
+  </body>
+</html>

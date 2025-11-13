@@ -1,15 +1,76 @@
-<div class="notebook-container" id="notebook-main">
-    <div class="notebook-header">
-        <h2>Meine Projekte</h2>
-        <button class="btn-new-project" onclick="showNewProjectModal()">+ Neues Projekt</button>
+<div class="notebook-container">
+    <div class="nlm-app">
+        <!-- Sidebar -->
+        <aside class="nlm-sidebar">
+            <div class="nlm-sidebar-header">
+                <h3 class="nlm-title">📚 Mein Notebook</h3>
+                <button class="nlm-btn nlm-btn-add-source" type="button">+ Quellen</button>
+            </div>
+            <div class="nlm-sources">
+                <div class="nlm-sources-title">Quellen</div>
+                <div class="nlm-sources-list">
+                    <div class="nlm-source-card" tabindex="0">
+                        <div class="nlm-source-title">📝 Projektbericht Q4</div>
+                        <div class="nlm-source-meta">Hochgeladen vor 2 Tagen</div>
+                    </div>
+                    <div class="nlm-source-card" tabindex="0">
+                        <div class="nlm-source-title">📊 Marktanalyse 2024</div>
+                        <div class="nlm-source-meta">Hochgeladen vor 1 Woche</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <main class="nlm-main">
+            <div class="nlm-tabs">
+                <div class="nlm-tab active" data-tab="chat">Chat</div>
+                <div class="nlm-tab" data-tab="notes">Notizen</div>
+            </div>
+
+            <div class="nlm-content">
+                <!-- Chat -->
+                <section class="nlm-chat" data-content="chat">
+                    <div class="nlm-intro">
+                        <div class="nlm-intro-icon">🤖</div>
+                        <h2 class="nlm-intro-title">Stellen Sie Fragen zu Ihren Dokumenten</h2>
+                        <p class="nlm-intro-subtitle">Wählen Sie eine Quelle aus und starten Sie die Unterhaltung</p>
+                    </div>
+                </section>
+
+                <!-- Notes -->
+                <section class="nlm-notes hidden" data-content="notes">
+                    <div class="nlm-note-card">
+                        <div class="nlm-note-title">Wichtige Erkenntnisse</div>
+                        <div class="nlm-note-content">
+                            Die Marktanalyse zeigt ein Wachstum von 23% im Q4.
+                            <span class="nlm-citation">[1]</span> Dies entspricht den Prognosen aus dem Projektbericht.
+                            <span class="nlm-citation">[2]</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="nlm-chat-input hidden">
+                <input class="nlm-input" type="text" placeholder="Fragen Sie etwas zu Ihren Dokumenten..." />
+                <button class="nlm-btn nlm-btn-primary nlm-btn-send" type="button">Senden</button>
+            </div>
+        </main>
     </div>
-    <div class="projects-grid" id="projects-grid">
-        <div class="project-card" onclick="openProjectDetails('demo-1', 'Demo Projekt', '📓')">
-            <h3>Demo Projekt</h3>
-            <p>Beispiel-Projekt für NotebookLM</p>
-            <div class="project-meta">
-                <span class="project-sources">3 Quellen</span>
-                <span class="project-date">Heute</span>
+
+    <!-- Add Note Floating Button -->
+    <button class="nlm-add-note hidden" type="button" title="Neue Notiz">+</button>
+
+    <!-- Modal -->
+    <div class="nlm-modal" aria-hidden="true">
+        <div class="nlm-modal-content" role="dialog" aria-modal="true" aria-labelledby="nlm-modal-title">
+            <div class="nlm-modal-header" id="nlm-modal-title">Neue Notiz erstellen</div>
+            <input class="nlm-modal-input" data-field="title" type="text" placeholder="Titel" />
+            <textarea class="nlm-modal-input" data-field="content" rows="4" placeholder="Inhalt"></textarea>
+            <div class="nlm-modal-actions">
+                <button class="nlm-btn nlm-btn-secondary" data-action="cancel" type="button">Abbrechen</button>
+                <button class="nlm-btn nlm-btn-primary" data-action="confirm" type="button">Hinzufügen</button>
             </div>
         </div>
     </div>

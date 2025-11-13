@@ -188,7 +188,32 @@ function initFolderApp(windowId) {
 
     // Aktiviere den ersten Tab (chat)
     switchFolderTab("chat");
+
+    // Modal Event-Handler einrichten
+    setupModalHandlers();
   }, 100);
+}
+
+function setupModalHandlers() {
+  // Schließen bei Klick auf Overlay
+  const overlay = document.getElementById("folderModalOverlay");
+  if (overlay) {
+    overlay.addEventListener("click", function (e) {
+      if (e.target === this) {
+        closeFolderModal();
+      }
+    });
+  }
+
+  // ESC-Taste schließt Modal
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      const overlay = document.getElementById("folderModalOverlay");
+      if (overlay && overlay.classList.contains("active")) {
+        closeFolderModal();
+      }
+    }
+  });
 }
 
 function renderToolsGrid(category) {
@@ -240,6 +265,9 @@ function switchFolderTab(category) {
   }
 }
 
+// Modal state
+let currentToolUrl = null;
+
 function openToolDetails(toolName) {
   const tool = toolDetails[toolName];
   if (!tool) {
@@ -247,12 +275,53 @@ function openToolDetails(toolName) {
     return;
   }
 
-  const details = `
-        <strong>${toolName}</strong>\n\n${tool.desc}\n\nURL: ${tool.url}\n\n(Möchtest du diese Seite öffnen?)`;
+  // Finde Tool-Icon und Farbe aus folderTools
+  let toolIcon = "🔗";
+  let toolColor = "#b8d4e8";
 
-  if (confirm(details)) {
-    window.open(tool.url, "_blank");
+  for (const category in folderTools) {
+    const foundTool = folderTools[category].find((t) => t.name === toolName);
+    if (foundTool) {
+      toolIcon = foundTool.icon;
+      toolColor = foundTool.color;
+      break;
+    }
   }
+
+  // Setze Modal-Inhalt
+  document.getElementById("folderModalTitle").textContent = toolName;
+  document.getElementById("folderModalDesc").textContent = tool.desc;
+  document.getElementById("folderModalUrl").textContent = tool.url;
+
+  const appIcon = document.getElementById("folderAppIcon");
+  appIcon.textContent = toolIcon;
+  appIcon.style.background = `linear-gradient(135deg, ${toolColor} 0%, ${toolColor}dd 100%)`;
+
+  // Speichere URL für Bestätigung
+  currentToolUrl = tool.url;
+
+  // Öffne Modal
+  openFolderModal();
+}
+
+function openFolderModal() {
+  const overlay = document.getElementById("folderModalOverlay");
+  overlay.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeFolderModal() {
+  const overlay = document.getElementById("folderModalOverlay");
+  overlay.classList.remove("active");
+  document.body.style.overflow = "";
+  currentToolUrl = null;
+}
+
+function confirmFolderAction() {
+  if (currentToolUrl) {
+    window.open(currentToolUrl, "_blank");
+  }
+  closeFolderModal();
 }
 
 function showToolPreview(toolName, element) {

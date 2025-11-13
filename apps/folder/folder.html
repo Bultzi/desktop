@@ -1,17 +1,76 @@
 <div class="folder-container">
-    <div class="folder-tabs">
-        <div class="folder-tab active" data-tab="chat" onclick="switchFolderTab('chat')">💬 Chat</div>
-        <div class="folder-tab" data-tab="video" onclick="switchFolderTab('video')">🎬 Video</div>
-        <div class="folder-tab" data-tab="bild" onclick="switchFolderTab('bild')">🖼️ Bild</div>
-        <div class="folder-tab" data-tab="audio" onclick="switchFolderTab('audio')">🎵 Audio</div>
-        <div class="folder-tab" data-tab="x" onclick="switchFolderTab('x')">✨ X</div>
+  <div class="folder-tabs">
+    <div
+      class="folder-tab active"
+      data-tab="chat"
+      onclick="switchFolderTab('chat')"
+    >
+      💬 Chat
     </div>
-    <div class="folder-tab-content">
-        <div class="folder-tools-grid" data-content="chat" id="folder-chat"></div>
-        <div class="folder-tools-grid hidden" data-content="video" id="folder-video"></div>
-        <div class="folder-tools-grid hidden" data-content="bild" id="folder-bild"></div>
-        <div class="folder-tools-grid hidden" data-content="audio" id="folder-audio"></div>
-        <div class="folder-tools-grid hidden" data-content="x" id="folder-x"></div>
+    <div class="folder-tab" data-tab="video" onclick="switchFolderTab('video')">
+      🎬 Video
     </div>
+    <div class="folder-tab" data-tab="bild" onclick="switchFolderTab('bild')">
+      🖼️ Bild
+    </div>
+    <div class="folder-tab" data-tab="audio" onclick="switchFolderTab('audio')">
+      🎵 Audio
+    </div>
+    <div class="folder-tab" data-tab="x" onclick="switchFolderTab('x')">
+      ✨ X
+    </div>
+  </div>
+  <div class="folder-tab-content">
+    <div class="folder-tools-grid" data-content="chat" id="folder-chat"></div>
+    <div
+      class="folder-tools-grid hidden"
+      data-content="video"
+      id="folder-video"
+    ></div>
+    <div
+      class="folder-tools-grid hidden"
+      data-content="bild"
+      id="folder-bild"
+    ></div>
+    <div
+      class="folder-tools-grid hidden"
+      data-content="audio"
+      id="folder-audio"
+    ></div>
+    <div class="folder-tools-grid hidden" data-content="x" id="folder-x"></div>
+  </div>
 </div>
 
+<!-- Tool Details Modal -->
+<div class="folder-modal-overlay" id="folderModalOverlay">
+  <div class="folder-modal" role="dialog" aria-modal="true">
+    <div class="folder-modal-header">
+      <div class="folder-modal-globe-icon"></div>
+      <span>Details des Tools</span>
+    </div>
+    <div class="folder-modal-body">
+      <div class="folder-modal-content">
+        <div class="folder-app-icon" id="folderAppIcon"></div>
+        <div class="folder-modal-text">
+          <h3 id="folderModalTitle"></h3>
+          <p id="folderModalDesc"></p>
+        </div>
+      </div>
+      <div class="folder-modal-url" id="folderModalUrl"></div>
+      <div class="folder-modal-buttons">
+        <button
+          class="folder-btn folder-btn-secondary"
+          onclick="closeFolderModal()"
+        >
+          Abbrechen
+        </button>
+        <button
+          class="folder-btn folder-btn-primary"
+          onclick="confirmFolderAction()"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,79 +1,377 @@
 /**
- * NotebookLM App Styles
+ * NotebookLM – token-basierte Styles (Design bleibt konsistent)
  */
 
 .notebook-container {
-    padding: 24px;
     height: 100%;
-    overflow-y: auto;
 }
 
-.notebook-header {
+.nlm-app {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
+    height: 100%;
+    gap: 0;
 }
 
-.projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-}
-
-.project-card {
-    padding: 20px;
-    background: white;
-    border: 2px solid #e0e0e0;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
+/* Sidebar */
+.nlm-sidebar {
+    width: 280px;
+    min-width: 240px;
+    border-right: 1px solid var(--color-border, rgba(94, 82, 64, 0.2));
+    background: var(--color-surface, #ffffff);
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
-.project-card:hover {
-    border-color: #2196f3;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.nlm-sidebar-header {
+    padding: var(--space-12, 12px) var(--space-16, 16px);
+    border-bottom: 1px solid var(--color-border, rgba(94, 82, 64, 0.2));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8, 8px);
 }
 
-.project-card h3 {
+.nlm-title {
     margin: 0;
-    font-size: 16px;
-    color: #2c2c2c;
+    font-size: var(--font-size-base, 14px);
+    font-weight: 700;
+    color: var(--color-text, #2c2c2c);
 }
 
-.project-card p {
-    margin: 0;
-    font-size: 13px;
-    color: #666;
+.nlm-btn {
+    padding: var(--space-8, 8px) var(--space-12, 12px);
+    border-radius: var(--radius-base, 8px);
+    border: 2px solid var(--color-border, rgba(94, 82, 64, 0.2));
+    background: transparent;
+    color: var(--color-text, #2c2c2c);
+    cursor: pointer;
+    font-size: var(--font-size-sm, 12px);
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.nlm-btn:hover {
+    border-color: var(--color-primary, rgba(33, 128, 141, 1));
+    transform: translateY(-1px);
+}
+
+.nlm-btn-primary {
+    background: var(--color-primary, rgba(33, 128, 141, 1));
+    color: white;
+    border-color: transparent;
+}
+
+.nlm-btn-primary:hover {
+    background: var(--color-primary-hover, rgba(29, 116, 128, 1));
+    box-shadow: 0 4px 12px rgba(33, 128, 141, 0.25);
+}
+
+.nlm-btn-secondary {
+    background: transparent;
+}
+
+.nlm-sources {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8, 8px);
+    padding: var(--space-12, 12px);
+    overflow: hidden;
     flex: 1;
 }
 
-.project-meta {
+.nlm-sources-title {
+    font-size: var(--font-size-sm, 12px);
+    font-weight: 700;
+    color: var(--color-text-secondary, rgba(98, 108, 113, 1));
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 var(--space-4, 4px);
+}
+
+.nlm-sources-list {
+    overflow-y: auto;
+    padding: var(--space-4, 4px);
     display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: #999;
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid #f0f0f0;
+    flex-direction: column;
+    gap: var(--space-8, 8px);
 }
 
-.project-sources,
-.project-date {
-    font-size: 11px;
-}
-
-.btn-new-project {
-    padding: 10px 20px;
-    background: #2196f3;
-    color: white;
-    border: none;
-    border-radius: 8px;
+.nlm-source-card {
+    background: var(--color-surface, #ffffff);
+    border: 1px solid var(--color-card-border, rgba(94, 82, 64, 0.15));
+    border-radius: var(--radius-base, 8px);
+    padding: var(--space-10, 10px) var(--space-12, 12px);
     cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nlm-source-card:hover {
+    border-color: var(--color-primary, rgba(33, 128, 141, 1));
+    background: rgba(var(--color-teal-300-rgb, 50, 184, 198), 0.06);
+}
+
+.nlm-source-card.active {
+    border-color: var(--color-primary, rgba(33, 128, 141, 1));
+    background: rgba(var(--color-teal-300-rgb, 50, 184, 198), 0.1);
+}
+
+.nlm-source-title {
+    font-size: var(--font-size-base, 14px);
+    font-weight: 600;
+    color: var(--color-text, #2c2c2c);
+    margin-bottom: 2px;
+}
+
+.nlm-source-meta {
+    font-size: var(--font-size-sm, 12px);
+    color: var(--color-text-secondary, rgba(98, 108, 113, 1));
+}
+
+/* Main */
+.nlm-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.nlm-tabs {
+    display: flex;
+    gap: var(--space-4, 4px);
+    padding: 0 var(--space-12, 12px);
+    border-bottom: 1px solid var(--color-border, rgba(94, 82, 64, 0.2));
+}
+
+.nlm-tab {
+    padding: var(--space-12, 12px) var(--space-16, 16px);
+    cursor: pointer;
+    font-size: var(--font-size-base, 14px);
+    color: var(--color-text, #2c2c2c);
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.nlm-tab:hover {
+    background: rgba(var(--color-teal-300-rgb, 50, 184, 198), 0.06);
+}
+
+.nlm-tab.active {
+    color: var(--color-primary, rgba(33, 128, 141, 1));
+    border-bottom-color: var(--color-primary, rgba(33, 128, 141, 1));
     font-weight: 600;
 }
 
+.nlm-content {
+    flex: 1;
+    padding: var(--space-16, 16px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16, 16px);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Chat */
+.nlm-chat {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.nlm-intro {
+    text-align: center;
+    color: var(--color-text-secondary, rgba(98, 108, 113, 1));
+    padding: 40px 20px;
+}
+
+.nlm-intro-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.nlm-intro-title {
+    margin: 0 0 8px 0;
+    color: var(--color-text, #2c2c2c);
+    font-size: var(--font-size-lg, 16px);
+    font-weight: 700;
+}
+
+.nlm-intro-subtitle {
+    margin: 0;
+    font-size: var(--font-size-base, 14px);
+}
+
+.nlm-message {
+    margin-bottom: var(--space-16, 16px);
+}
+
+.nlm-bubble {
+    padding: var(--space-12, 12px) var(--space-16, 16px);
+    border-radius: var(--radius-lg, 12px);
+    background: var(--color-surface, #ffffff);
+    border: 1px solid var(--color-card-border, rgba(94, 82, 64, 0.15));
+    max-width: 85%;
+}
+
+.nlm-bubble.user {
+    margin-left: auto;
+    background: rgba(var(--color-teal-300-rgb, 50, 184, 198), 0.08);
+    border-color: rgba(var(--color-teal-300-rgb, 50, 184, 198), 0.35);
+}
+
+.nlm-message-text {
+    font-size: var(--font-size-base, 14px);
+    line-height: 1.6;
+    color: var(--color-text, #2c2c2c);
+    white-space: pre-wrap;
+}
+
+.nlm-citations {
+    margin-top: var(--space-8, 8px);
+    display: flex;
+    gap: var(--space-8, 8px);
+    flex-wrap: wrap;
+}
+
+.nlm-citation-tag,
+.nlm-citation {
+    display: inline-block;
+    background: rgba(var(--color-teal-300-rgb, 50, 184, 198), 0.08);
+    color: var(--color-primary, rgba(33, 128, 141, 1));
+    border: 1px solid rgba(var(--color-teal-300-rgb, 50, 184, 198), 0.35);
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-size: var(--font-size-sm, 12px);
+}
+
+/* Chat Input */
+.nlm-chat-input {
+    border-top: 1px solid var(--color-border, rgba(94, 82, 64, 0.2));
+    padding: var(--space-12, 12px) var(--space-16, 16px);
+    background: var(--color-surface, #ffffff);
+    display: flex;
+    align-items: center;
+    gap: var(--space-8, 8px);
+}
+
+.nlm-input {
+    flex: 1;
+    padding: var(--space-10, 10px) var(--space-12, 12px);
+    background: transparent;
+    border: 2px solid var(--color-border, rgba(94, 82, 64, 0.2));
+    border-radius: var(--radius-base, 8px);
+    color: var(--color-text, #2c2c2c);
+    font-size: var(--font-size-base, 14px);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.nlm-input:focus {
+    border-color: var(--color-primary, rgba(33, 128, 141, 1));
+}
+
+/* Notes */
+.nlm-notes {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.nlm-note-card {
+    background: var(--color-surface, #ffffff);
+    border: 1px solid var(--color-card-border, rgba(94, 82, 64, 0.15));
+    border-radius: var(--radius-lg, 12px);
+    padding: var(--space-12, 12px) var(--space-16, 16px);
+}
+
+.nlm-note-title {
+    font-size: var(--font-size-lg, 16px);
+    font-weight: 600;
+    color: var(--color-text, #2c2c2c);
+    margin-bottom: var(--space-8, 8px);
+}
+
+.nlm-note-content {
+    font-size: var(--font-size-base, 14px);
+    line-height: 1.6;
+    color: var(--color-text, #2c2c2c);
+}
+
+/* Floating Add Note Button */
+.nlm-add-note {
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: var(--color-primary, rgba(33, 128, 141, 1));
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.04));
+    transition: transform 0.2s;
+}
+
+.nlm-add-note:hover {
+    transform: scale(1.05);
+}
+
+/* Modal */
+.nlm-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.nlm-modal.show {
+    display: flex;
+}
+
+.nlm-modal-content {
+    background: var(--color-surface, #ffffff);
+    border: 1px solid var(--color-border, rgba(94, 82, 64, 0.2));
+    border-radius: var(--radius-lg, 12px);
+    width: 90%;
+    max-width: 520px;
+    padding: var(--space-16, 16px) var(--space-16, 16px);
+    box-shadow: var(--shadow-lg, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+}
+
+.nlm-modal-header {
+    font-size: var(--font-size-xl, 18px);
+    font-weight: 700;
+    color: var(--color-text, #2c2c2c);
+    margin-bottom: var(--space-12, 12px);
+}
+
+.nlm-modal-input {
+    width: 100%;
+    padding: var(--space-10, 10px) var(--space-12, 12px);
+    background: transparent;
+    border: 2px solid var(--color-border, rgba(94, 82, 64, 0.2));
+    border-radius: var(--radius-base, 8px);
+    color: var(--color-text, #2c2c2c);
+    font-size: var(--font-size-base, 14px);
+    outline: none;
+    margin-bottom: var(--space-12, 12px);
+    transition: border-color 0.2s;
+}
+
+.nlm-modal-input:focus {
+    border-color: var(--color-primary, rgba(33, 128, 141, 1));
+}
+
+.nlm-modal-actions {
+    display: flex;
+    gap: var(--space-8, 8px);
+    justify-content: flex-end;
+}
